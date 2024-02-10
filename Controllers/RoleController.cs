@@ -1,10 +1,10 @@
-﻿using IfRolesExample.Data;
-using IfRolesExample.Repositories;
-using IfRolesExample.ViewModels;
+﻿using PayPal.Data;
+using PayPal.Repositories;
+using PayPal.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace IfRolesExample.Controllers
+namespace PayPal.Controllers
 {
     public class RoleController : Controller
     {
@@ -19,18 +19,29 @@ namespace IfRolesExample.Controllers
         {
             RoleRepo roleRepo = new RoleRepo(_db);
             ViewBag.Message = message ?? "";
-
+            MyRegisteredUserRepo registeredUserRepo = new MyRegisteredUserRepo(_db);
+            string userName = User.Identity.Name;
+            string name = registeredUserRepo.GetUserName(userName);
+            ViewBag.UserName = name;
             return View(roleRepo.GetAllRoles());
         }
 
         public ActionResult Create()
         {
+            MyRegisteredUserRepo registeredUserRepo = new MyRegisteredUserRepo(_db);
+            string userName = User.Identity.Name;
+            string name = registeredUserRepo.GetUserName(userName);
+            ViewBag.UserName = name;
             return View();
         }
 
         [HttpPost]
         public ActionResult Create(RoleVM roleVM)
         {
+            MyRegisteredUserRepo registeredUserRepo = new MyRegisteredUserRepo(_db);
+            string userName = User.Identity.Name;
+            string name = registeredUserRepo.GetUserName(userName);
+            ViewBag.UserName = name;
             if (ModelState.IsValid)
             {
                 RoleRepo roleRepo = new RoleRepo(_db);
@@ -57,6 +68,10 @@ namespace IfRolesExample.Controllers
         [HttpGet]
         public ActionResult Delete(string roleName)
         {
+            MyRegisteredUserRepo registeredUserRepo = new MyRegisteredUserRepo(_db);
+            string userName = User.Identity.Name;
+            string name = registeredUserRepo.GetUserName(userName);
+            ViewBag.UserName = name;
             RoleRepo roleRepo = new RoleRepo(_db);
 
             return View(roleRepo.GetRole(roleName));

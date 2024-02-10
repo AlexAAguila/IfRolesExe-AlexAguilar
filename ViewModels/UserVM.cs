@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace IfRolesExample.ViewModels
+namespace PayPal.ViewModels
 {
     public class UserVM
     {

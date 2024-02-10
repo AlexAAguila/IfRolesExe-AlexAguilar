@@ -6,21 +6,23 @@
 @if (SignInManager.IsSignedIn(User))
 {
     <li class="nav-item">
-        <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
+            <a class="nav-link text-dark" style="color:#D9D9D9 !important; font-size: 1.3em !important;" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @ViewBag.UserName!</a>
     </li>
     <li class="nav-item">
-        <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button  type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-        </form>
+            <form class="form-inline" style="color:#D9D9D9 !important; font-size: 1.3em !important;" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button type="submit" class="nav-link btn btn-link text-dark" style="color:#D9D9D9 !important; font-size: 1em !important;">
+                    Logout
+                </button>
+            </form>
     </li>
 }
 else
 {
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+        <a class="nav-link text-dark" style="color:#D9D9D9 !important; font-size: 1.3em !important;" asp-area="Identity" asp-page="/Account/Register">Register</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+        <a class="nav-link text-dark" style="color:#D9D9D9 !important; font-size: 1.3em !important;" asp-area="Identity" asp-page="/Account/Login">Login</a>
     </li>
 }
 </ul>

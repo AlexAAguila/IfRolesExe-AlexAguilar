@@ -1,4 +1,4 @@
-namespace IfRolesExample.Models
+namespace PayPal.Models
 {
     public class ErrorViewModel
     {

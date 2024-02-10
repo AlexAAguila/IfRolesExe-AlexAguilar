@@ -1,5 +1,5 @@
-﻿using IfRolesExample.Data;
-using IfRolesExample.ViewModels;
+﻿using PayPal.Data;
+using PayPal.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 public class UserRepo

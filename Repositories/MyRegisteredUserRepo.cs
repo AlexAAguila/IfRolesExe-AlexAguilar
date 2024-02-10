@@ -1,10 +1,10 @@
-﻿using IfRolesExample.Data;
-using IfRolesExample.Models;
-using IfRolesExample.ViewModels;
+﻿using PayPal.Data;
+using PayPal.Models;
+using PayPal.ViewModels;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
+//using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 
-namespace IfRolesExample.Repositories
+namespace PayPal.Repositories
 {
     public class MyRegisteredUserRepo
     {
@@ -30,9 +30,8 @@ namespace IfRolesExample.Repositories
         // Get all roles of a specific user.
         public string? GetUserName(string email)
         {
-            var user =  _db.MyRegisteredUsers.FirstOrDefault(u => u.Email == email);
-            return user.FirstName+ " " +user.LastName;
-           
+            var user = _db.MyRegisteredUsers.FirstOrDefault(u => u.Email == email);
+            return user?.FirstName + " " + user?.LastName;
         }
     }
 }

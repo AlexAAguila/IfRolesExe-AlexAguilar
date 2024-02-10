@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace IfRolesExample.Models
+namespace PayPal.Models
 {
     public class MyRegisteredUser
     {

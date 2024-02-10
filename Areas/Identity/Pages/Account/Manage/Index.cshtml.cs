@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace IfRolesExample.Areas.Identity.Pages.Account.Manage
+namespace PayPal.Areas.Identity.Pages.Account.Manage
 {
     public class IndexModel : PageModel
     {

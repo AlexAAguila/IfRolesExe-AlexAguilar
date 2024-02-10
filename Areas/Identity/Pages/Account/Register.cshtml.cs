@@ -10,9 +10,9 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
-using IfRolesExample.Data;
-using IfRolesExample.Models;
-using IfRolesExample.Repositories;
+using PayPal.Data;
+using PayPal.Models;
+using PayPal.Repositories;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -21,8 +21,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using static PayPal.Services.ReCAPTCHA;
 
-namespace IfRolesExample.Areas.Identity.Pages.Account
+namespace PayPal.Areas.Identity.Pages.Account
 {
     public class RegisterModel : PageModel
     {
@@ -34,6 +35,7 @@ namespace IfRolesExample.Areas.Identity.Pages.Account
         private readonly IEmailSender _emailSender;
         private readonly ApplicationDbContext _db;
         private  MyRegisteredUserRepo _myRegisteredUserRepo;
+        private readonly IConfiguration _configuration;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
@@ -41,7 +43,8 @@ namespace IfRolesExample.Areas.Identity.Pages.Account
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            ApplicationDbContext context
+            ApplicationDbContext context,
+            IConfiguration configuration
            )
         {
             _userManager = userManager;
@@ -51,6 +54,7 @@ namespace IfRolesExample.Areas.Identity.Pages.Account
             _logger = logger;
             _emailSender = emailSender;
             _db = context;
+            _configuration = configuration;
         }
 
         /// <summary>
@@ -118,6 +122,7 @@ namespace IfRolesExample.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
+            ViewData["SiteKey"] = _configuration["Recaptcha:SiteKey"];
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
@@ -126,6 +131,19 @@ namespace IfRolesExample.Areas.Identity.Pages.Account
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            string captchaResponse = Request.Form["g-Recaptcha-Response"];
+            string secret = _configuration["Recaptcha:SecretKey"];
+            ReCaptchaValidationResult resultCaptcha =
+                ReCaptchaValidator.IsValid(secret, captchaResponse);
+
+            // Invalidate the form if the captcha is invalid.
+            if (!resultCaptcha.Success)
+            {
+                ViewData["SiteKey"] = _configuration["Recaptcha:SiteKey"];
+                ModelState.AddModelError(string.Empty,
+                    "The ReCaptcha is invalid.");
+            }
+
             if (ModelState.IsValid)
             {
                 var user = CreateUser();

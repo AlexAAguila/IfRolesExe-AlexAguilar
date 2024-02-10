@@ -3,7 +3,9 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace IfRolesExample.Migrations
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
+namespace PayPal.Migrations
 {
     /// <inheritdoc />
     public partial class initialCreate : Migration
@@ -51,6 +53,32 @@ namespace IfRolesExample.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "IPNs",
+                columns: table => new
+                {
+                    paymentID = table.Column<string>(type: "TEXT", nullable: false),
+                    custom = table.Column<string>(type: "TEXT", nullable: false),
+                    cart = table.Column<string>(type: "TEXT", nullable: false),
+                    create_time = table.Column<string>(type: "TEXT", nullable: false),
+                    payerID = table.Column<string>(type: "TEXT", nullable: false),
+                    payerFirstName = table.Column<string>(type: "TEXT", nullable: false),
+                    payerLastName = table.Column<string>(type: "TEXT", nullable: false),
+                    payerMiddleName = table.Column<string>(type: "TEXT", nullable: false),
+                    payerEmail = table.Column<string>(type: "TEXT", nullable: false),
+                    payerCountryCode = table.Column<string>(type: "TEXT", nullable: false),
+                    payerStatus = table.Column<string>(type: "TEXT", nullable: false),
+                    amount = table.Column<string>(type: "TEXT", nullable: false),
+                    currency = table.Column<string>(type: "TEXT", nullable: false),
+                    intent = table.Column<string>(type: "TEXT", nullable: false),
+                    paymentMethod = table.Column<string>(type: "TEXT", nullable: false),
+                    paymentState = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_IPNs", x => x.paymentID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "MyRegisteredUsers",
                 columns: table => new
                 {
@@ -63,6 +91,40 @@ namespace IfRolesExample.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_MyRegisteredUsers", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Products",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    ProductName = table.Column<string>(type: "TEXT", nullable: false),
+                    Description = table.Column<string>(type: "TEXT", nullable: false),
+                    Price = table.Column<string>(type: "TEXT", nullable: false),
+                    Currency = table.Column<string>(type: "TEXT", nullable: false),
+                    ImageName = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Products", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TransactionVMs",
+                columns: table => new
+                {
+                    paymentID = table.Column<string>(type: "TEXT", nullable: false),
+                    create_time = table.Column<string>(type: "TEXT", nullable: true),
+                    payerName = table.Column<string>(type: "TEXT", nullable: true),
+                    payerEmail = table.Column<string>(type: "TEXT", nullable: true),
+                    amount = table.Column<string>(type: "TEXT", nullable: true),
+                    currency = table.Column<string>(type: "TEXT", nullable: true),
+                    paymentMethod = table.Column<string>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TransactionVMs", x => x.paymentID);
                 });
 
             migrationBuilder.CreateTable(
@@ -171,6 +233,16 @@ namespace IfRolesExample.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.InsertData(
+                table: "Products",
+                columns: new[] { "ID", "Currency", "Description", "ImageName", "Price", "ProductName" },
+                values: new object[,]
+                {
+                    { 1, "CAD", "Are you looking for a fun and affordable way to pass the time? Look no further than our high-quality deck of cards! At only $3.79, this deck of cards is an excellent value.", "DeckOfCards.png", "3.79", "Red Cards" },
+                    { 2, "CAD", "Are you tired of being caught without an ace up your sleeve? Well, have no fear! Our special deck of cards comes with an extra ace, so you can always have the upper hand. And at just $4.95, it's a steal!", "FiveAces.jpg", "4.95", "Extra Ace" },
+                    { 3, "CAD", "Upgrade your card game with our premium black-styled deck of cards. Made with high-quality materials and featuring a sleek black design. At just $7.79, it's a small price to pay to make a big statement!", "BlackDeck.jpeg", "7.79", "Black Deck" }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -228,7 +300,16 @@ namespace IfRolesExample.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "IPNs");
+
+            migrationBuilder.DropTable(
                 name: "MyRegisteredUsers");
+
+            migrationBuilder.DropTable(
+                name: "Products");
+
+            migrationBuilder.DropTable(
+                name: "TransactionVMs");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

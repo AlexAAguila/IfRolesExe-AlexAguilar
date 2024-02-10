@@ -3,6 +3,9 @@
 @{
     ViewData["Title"] = "Register";
 }
+<!-- A reference is required to the Google API -->
+<script src='https://www.google.com/recaptcha/api.js'></script>
+
 
 <h1>@ViewData["Title"]</h1>
 
@@ -41,6 +44,8 @@
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
            
+            <!-- This must be placed inside the form. -->
+            <div class="g-recaptcha" data-sitekey='@ViewData["SiteKey"]'></div><br />
 
             <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </form>

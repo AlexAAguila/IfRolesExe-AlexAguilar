@@ -1,13 +1,13 @@
-﻿using IfRolesExample.Data;
-using IfRolesExample.Repositories;
-using IfRolesExample.ViewModels;
+﻿using PayPal.Data;
+using PayPal.Repositories;
+using PayPal.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
-namespace IfRolesExample.Controllers
+namespace PayPal.Controllers
 {
     [Authorize(Roles = "Admin")]
     public class UserRoleController : Controller
@@ -24,6 +24,10 @@ namespace IfRolesExample.Controllers
 
         public ActionResult Index()
         {
+            MyRegisteredUserRepo registeredUserRepo = new MyRegisteredUserRepo(_db);
+            string userName = User.Identity.Name;
+            string name = registeredUserRepo.GetUserName(userName);
+            ViewBag.UserName = name;
             UserRepo userRepo = new UserRepo(_db);
             IEnumerable<UserVM> users = userRepo.GetAllUsers();
 
@@ -42,11 +46,16 @@ namespace IfRolesExample.Controllers
             ViewBag.Message = message;
             ViewBag.UserName = name;
 
+
             return View(roles);
         }
 
         public ActionResult Create()
         {
+            MyRegisteredUserRepo registeredUserRepo = new MyRegisteredUserRepo(_db);
+            string userName = User.Identity.Name;
+            string name = registeredUserRepo.GetUserName(userName);
+            ViewBag.UserName = name;
             RoleRepo roleRepo = new RoleRepo(_db);
             ViewBag.RoleSelectList = roleRepo.GetRoleSelectList();
 
@@ -59,6 +68,10 @@ namespace IfRolesExample.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(UserRoleVM userRoleVM)
         {
+            MyRegisteredUserRepo registeredUserRepo = new MyRegisteredUserRepo(_db);
+            string userName = User.Identity.Name;
+            string name = registeredUserRepo.GetUserName(userName);
+            ViewBag.UserName = name;
             UserRoleRepo userRoleRepo = new UserRoleRepo(_userManager);
 
             if (ModelState.IsValid)
@@ -99,6 +112,10 @@ namespace IfRolesExample.Controllers
 
         public async Task<IActionResult> Delete(string role, string email)
         {
+            MyRegisteredUserRepo registeredUserRepo = new MyRegisteredUserRepo(_db);
+            string userName = User.Identity.Name;
+            string name = registeredUserRepo.GetUserName(userName);
+            ViewBag.UserName = name;
             //UserRoleRepo userRoleRepo = new UserRoleRepo(_userManager);
             //var roles = await userRoleRepo.GetUserRolesAsync(role);
 
@@ -118,6 +135,10 @@ namespace IfRolesExample.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(UserRoleVM userRoleVM)
         {
+            MyRegisteredUserRepo registeredUserRepo = new MyRegisteredUserRepo(_db);
+            string userName = User.Identity.Name;
+            string name = registeredUserRepo.GetUserName(userName);
+            ViewBag.UserName = name;
             UserRoleRepo userRoleRepo = new UserRoleRepo(_userManager);
 
             if (ModelState.IsValid)
